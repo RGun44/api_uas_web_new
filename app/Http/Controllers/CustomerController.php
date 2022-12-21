@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Ticket;
+use App\Models\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class TicketController extends Controller
+class CustomerController extends Controller
 {
     //
     public function index()
     {
-        $tickets = Ticket::all();
+        $Customers = Customer::all();
 
-        if (count($tickets) > 0) {
+        if (count($Customers) > 0) {
             return response([
                 'message' => 'Retrieve All Success',
-                'data' => $tickets
+                'data' => $Customers
             ], 200);
         }
 
@@ -32,102 +32,99 @@ class TicketController extends Controller
     {
         $storeData = $request->all();
         $validate = Validator::make($storeData, [
-            'concert_id' => 'required',
-            'user_id' => 'required',
-            'class' => 'required',
-            'price' => 'required',
-            'book_date' => 'required',
+            "username" => "required",
+            "password" => "required",
+            "name" => "required",
+            "email" => "required|email"
         ]);
 
         if ($validate->fails()) //Untuk mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);
 
-        $ticket = Ticket::create($storeData);
+        $Customer = Customer::create($storeData);
         return response([
-            'message' => 'Add ticket Success',
-            'data' => $ticket
+            'message' => 'Add Customer Success',
+            'data' => $Customer
         ], 200);
     }
 
     public function show($id)
     {
 
-        $ticket = Ticket::find($id);
-        if (!is_null($ticket)) {
+        $Customer = Customer::find($id);
+        if (!is_null($Customer)) {
             return response([
-                'message' => 'Retrieve Ticket Success',
-                'data' => $ticket
+                'message' => 'Retrieve Customer Success',
+                'data' => $Customer
             ], 200);
         }
 
         return response([
-            'message' => 'Ticket Not Found',
+            'message' => 'Customer Not Found',
             'data' => null
         ], 404);
     }
 
     public function update(Request $request, $id)
     {
-        $ticket = Ticket::find($id);
+        $Customer = Customer::find($id);
 
-        if (is_null($ticket)) {
+        if (is_null($Customer)) {
             return response([
-                'message' => 'ticket Not Found',
+                'message' => 'Customer Not Found',
                 'data' => null
             ], 404);
         }
 
         $updateData = $request->all();
         $validate = Validator::make($updateData, [
-            'concert_id' => 'required',
-            'user_id' => 'required',
-            'class' => 'required',
-            'price' => 'required',
-            'book_date' => 'required',
+            "username" => "required",
+            "password" => "required",
+            "name" => "required",
+            "email" => "required|email"
         ]);
 
         if ($validate->fails()) //Untuk mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);
 
-        $ticket->concert_id = $updateData['concert_id'];
-        $ticket->user_id = $updateData['user_id'];
-        $ticket->class = $updateData['class'];
-        $ticket->price = $updateData['price'];
-        $ticket->book_date = $updateData['book_date'];
+        $Customer->name = $updateData['name'];
+        $Customer->username = $updateData['username'];
+        $Customer->password = $updateData['password'];
+        $Customer->email = $updateData['email'];
 
-        if ($ticket->save()) {
+        if ($Customer->save()) {
             return response([
-                'message' => 'Update ticket Success',
-                'data' => $ticket
+                'message' => 'Update Customer Success',
+                'data' => $Customer
             ], 200);
         }
 
         return response([
-            'message' => 'Update ticket Failed',
+            'message' => 'Update Customer Failed',
             'data' => null
         ], 400);
     }
 
     public function destroy($id)
     {
-        $ticket = Ticket::find($id);
+        $Customer = Customer::find($id);
 
-        if (is_null($ticket)) {
+        if (is_null($Customer)) {
             return response([
-                'message' => 'Ticket Not Found',
+                'message' => 'Customer Not Found',
                 'data' => null
             ], 404);
         }
 
-        if ($ticket->delete()) {
+        if ($Customer->delete()) {
             return response([
-                'message' => 'Delete Ticket Success',
-                'data' => $ticket
+                'message' => 'Delete Customer Success',
+                'data' => $Customer
             ], 200);
         }
 
         return response([
-            'message' => 'Delete Ticket Failed',
+            'message' => 'Delete Customer Failed',
             'data' => null
         ], 400);
     }

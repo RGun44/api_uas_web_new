@@ -29,3 +29,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::get('/logout', [AuthController::class, 'logout']);
 });
+
+Route::resource('band', \App\Http\Controllers\BandController::class);
+Route::resource('concert', \App\Http\Controllers\ConcertController::class);
+Route::resource('ticket', \App\Http\Controllers\TicketController::class);
+Route::resource('customer', \App\Http\Controllers\CustomerController::class);
